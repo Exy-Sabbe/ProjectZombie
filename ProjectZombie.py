@@ -1,0 +1,47 @@
+import pygame
+from sys import exit # Terminating the program
+import os
+import player
+
+# ----CONSTANTS----
+GAME_WIDTH = 800
+GAME_HEIGHT = 600
+
+# ----INIT GAME----
+# Always initialize pygame!
+pygame.init()
+# Create window of desired size
+window = pygame.display.set_mode((GAME_WIDTH, GAME_HEIGHT))
+# Set name of window
+pygame.display.set_caption("Project Zombie")
+# Set icon if wished, commented because of code order swapping around
+#pygame.display.set_icon(player_image)
+# Get clock for FPS handling
+clock = pygame.time.Clock()
+
+# ---INIT PLAYER---
+player = player.Player(GAME_WIDTH, GAME_HEIGHT, os.path.join(os.path.dirname(os.path.realpath(__file__)), os.path.join("images", "character.png")), 90)
+
+# ----GAME LOOP----
+while True:
+    # Event handler (like inputs)
+    for event in pygame.event.get():
+        # If user clicks X button on window
+        if event.type == pygame.QUIT:
+            # Stop both pygame running & quit program
+            pygame.quit()
+            exit()
+
+    # ----UPDATE----
+    player.update()
+
+    # ----DRAW----
+    # Fill background
+    window.fill("blue")
+    player.draw(window)
+
+    # Update display every frame
+    pygame.display.update()
+
+    # Force game at 60 FPS (basically freeze game loop until enough time has passed for 1 frame)
+    clock.tick(60)
