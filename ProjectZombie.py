@@ -37,7 +37,7 @@ while True:
             exit()
 
     # ----UPDATE----
-    my_player.update()
+    my_player.update(clock.get_time())
 
     # ----DRAW----
     game_map.draw(window)
@@ -47,4 +47,4 @@ while True:
     pygame.display.update()
 
     # Force game at 60 FPS (basically freeze game loop until enough time has passed for 1 frame)
-    clock.tick(60)
+    clock.tick()
