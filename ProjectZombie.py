@@ -1,7 +1,8 @@
 import pygame
-from sys import exit # Terminating the program
 import os
-import player
+from sys import exit # Terminating the program
+from player import *
+from map import *
 
 # ----CONSTANTS----
 GAME_WIDTH = 800
@@ -19,8 +20,11 @@ pygame.display.set_caption("Project Zombie")
 # Get clock for FPS handling
 clock = pygame.time.Clock()
 
+# ----INIT MAP-----
+game_map = Map(20, 15)
+
 # ---INIT PLAYER---
-player = player.Player(GAME_WIDTH, GAME_HEIGHT, os.path.join(os.path.dirname(os.path.realpath(__file__)), os.path.join("images", "character.png")), 90)
+my_player = Player(game_map, os.path.join(os.path.dirname(os.path.realpath(__file__)), os.path.join("images", "character.png")), 90)
 
 # ----GAME LOOP----
 while True:
@@ -33,12 +37,11 @@ while True:
             exit()
 
     # ----UPDATE----
-    player.update()
+    my_player.update()
 
     # ----DRAW----
-    # Fill background
-    window.fill("blue")
-    player.draw(window)
+    game_map.draw(window)
+    my_player.draw(window)
 
     # Update display every frame
     pygame.display.update()

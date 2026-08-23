@@ -1,5 +1,6 @@
 import pygame
 import math
+import map
 
 # ---- CONSTANTS ----
 PLAYER_WIDTH = 40
@@ -7,14 +8,15 @@ PLAYER_HEIGHT = 30
 PLAYER_SPEED = 5
 
 class Player():
-    def __init__(self, window_width, window_height, image_path, corr_angle=0):
-        self.window_width = window_width
-        self.window_height = window_height
+    def __init__(self, map, image_path, corr_angle=0):
+        self.game_width = map.width * map.tile_size
+        self.game_height = map.height * map.tile_size
         self.width = PLAYER_WIDTH
         self.height = PLAYER_HEIGHT
         self.speed = PLAYER_SPEED
-        self.x = (self.window_width - self.width) / 2
-        self.y = (self.window_height - self.height) / 2
+        # Spawn player in the middle of the map
+        self.x = (self.game_width - self.width) / 2
+        self.y = (self.game_height - self.height) / 2
         self.half_size = max(self.width, self.height) / 2
         image = pygame.image.load(image_path)
         self.base_image = pygame.transform.scale(image, (self.width, self.height))
@@ -30,11 +32,11 @@ class Player():
         if (keys[pygame.K_UP] or keys[pygame.K_w]):
             self.y = max(self.y - self.speed, self.half_size)
         if (keys[pygame.K_DOWN] or keys[pygame.K_s]):
-            self.y = min(self.y + self.speed, self.window_height - self.half_size)
+            self.y = min(self.y + self.speed, self.game_height - self.half_size)
         if (keys[pygame.K_LEFT] or keys[pygame.K_a]):
             self.x = max(self.x - self.speed, self.half_size)
         if (keys[pygame.K_RIGHT] or keys[pygame.K_d]):
-            self.x = min(self.x + self.speed, self.window_width - self.half_size)
+            self.x = min(self.x + self.speed, self.game_width - self.half_size)
 
         # --ROTATION--
         # Get angle to rotate image (towards mouse)
