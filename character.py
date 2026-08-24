@@ -1,4 +1,5 @@
 import pygame
+import camera
 import math
 import map
 
@@ -25,6 +26,9 @@ class Character():
         self.__should_move_left = False
         self.__should_move_right = False
         self.__should_look_at = (0, 0)
+
+    def GetCenterPos(self):
+        return (self._x + self.__width / 2, self._y + self.__height / 2)
 
     def MoveUp(self):
         self.__should_move_up = True
@@ -119,4 +123,5 @@ class Character():
 
     def Draw(self, window):
         if self.__rot_image_rect is not None:
-            window.blit(self.__rot_image, self.__rot_image_rect.topleft)
+            image_pos = (self.__rot_image_rect.topleft[0] - camera.Camera().GetXPos(), self.__rot_image_rect.topleft[1] - camera.Camera().GetYPos())
+            window.blit(self.__rot_image, image_pos)

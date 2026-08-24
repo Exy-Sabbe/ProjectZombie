@@ -1,5 +1,6 @@
 import pygame
 import character
+import camera
 
 class Player(character.Character):
     def __init__(self, width, height, speed, map, image_path, corr_angle=0):
@@ -21,4 +22,11 @@ class Player(character.Character):
         if (keys[pygame.K_RIGHT] or keys[pygame.K_d]):
             self.MoveRight()
 
-        self.LookAt(pygame.mouse.get_pos())
+
+        look_position = pygame.mouse.get_pos()
+        look_position = (look_position[0] + camera.Camera().GetXPos(), look_position[1] + camera.Camera().GetYPos())
+        self.LookAt(look_position)
+
+    def Update(self, delta_time):
+        self.HandleUserInputs()
+        character.Character.Update(self, delta_time)

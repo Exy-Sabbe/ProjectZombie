@@ -1,4 +1,6 @@
 import pygame
+import camera
+from copy import copy
 import random
 
 TILE_SIZE = 40
@@ -29,7 +31,10 @@ class Tile():
 
     def Draw(self, window):
         # For now draw a Green/Red rectangle to see if it is passable or not, images to be added later
-        pygame.draw.rect(window, (0, 255, 0) if self.__is_passable else (255, 0, 0), self.__rect)
+        camera_rect = copy(self.__rect)
+        camera_rect.x -= camera.Camera().GetXPos()
+        camera_rect.y -= camera.Camera().GetYPos()
+        pygame.draw.rect(window, (0, 255, 0) if self.__is_passable else (255, 0, 0), camera_rect)
 
 
 class Map():
@@ -40,8 +45,11 @@ class Map():
         self.__tiles = []
         for row in range(self.__height):
             for col in range(self.__width):
+                passable = True
+                if row == 0 or col == 0 or row == self.__height - 1 or col == self.__width - 1:
+                    passable = False
                 # For now randomize whether a tile is passable or not, will be updated based on map image
-                self.__tiles.append(Tile(col * tile_size + tile_size / 2, row * tile_size + tile_size / 2, tile_size, bool(random.getrandbits(4))))
+                self.__tiles.append(Tile(col * tile_size + tile_size / 2, row * tile_size + tile_size / 2, tile_size, passable))
 
     def GetTiles(self):
         return self.__tiles
