@@ -4,30 +4,60 @@ import random
 TILE_SIZE = 40
 
 class Tile():
-    def __init__(self, position_x, position_y, size, is_passable = True):
-        self.position_x = position_x
-        self.position_y = position_y
-        self.size = size
-        self.is_passable = is_passable
-        halfsize = self.size / 2
-        self.rect = pygame.Rect(self.position_x - halfsize, self.position_y - halfsize, self.size, self.size)
+    def __init__(self, x_pos, y_pos, size, is_passable = True):
+        self.__x = x_pos
+        self.__y = y_pos
+        self.__size = size
+        self.__is_passable = is_passable
+        halfsize = self.__size / 2
+        self.__rect = pygame.Rect(self.__x - halfsize, self.__y - halfsize, self.__size, self.__size)
 
-    def draw(self, window):
+    def GetXPos(self):
+        return self.__x
+
+    def GetYPos(self):
+        return self.__y
+
+    def GetSize(self):
+        return self.__size
+
+    def IsPassable(self):
+        return self.__is_passable
+
+    def GetRect(self):
+        return self.__rect
+
+    def Draw(self, window):
         # For now draw a Green/Red rectangle to see if it is passable or not, images to be added later
-        pygame.draw.rect(window, (0, 255, 0) if self.is_passable else (255, 0, 0), self.rect)
+        pygame.draw.rect(window, (0, 255, 0) if self.__is_passable else (255, 0, 0), self.__rect)
 
 
 class Map():
-    def __init__(self, width, height):
-        self.width = width
-        self.height = height
-        self.tile_size = TILE_SIZE
-        self.tiles = []
-        for row in range(self.height):
-            for col in range(self.width):
+    def __init__(self, width, height, tile_size):
+        self.__width = width
+        self.__height = height
+        self.__tile_size = tile_size
+        self.__tiles = []
+        for row in range(self.__height):
+            for col in range(self.__width):
                 # For now randomize whether a tile is passable or not, will be updated based on map image
-                self.tiles.append(Tile(col * self.tile_size + self.tile_size / 2, row * self.tile_size + self.tile_size / 2, self.tile_size, bool(random.getrandbits(4))))
+                self.__tiles.append(Tile(col * tile_size + tile_size / 2, row * tile_size + tile_size / 2, tile_size, bool(random.getrandbits(4))))
 
-    def draw(self, window):
-        for tile in self.tiles:
-            tile.draw(window)
+    def GetTiles(self):
+        return self.__tiles
+
+    def GetTileWidth(self):
+        return self.__width
+
+    def GetTileHeight(self):
+        return self.__height
+
+    def GetPixelWidth(self):
+        return self.__width * self.__tile_size
+
+    def GetPixelHeight(self):
+        return self.__height * self.__tile_size
+
+    def Draw(self, window):
+        for tile in self.__tiles:
+            tile.Draw(window)

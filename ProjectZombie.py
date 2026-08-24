@@ -8,6 +8,14 @@ from map import *
 GAME_WIDTH = 800
 GAME_HEIGHT = 600
 
+PLAYER_WIDTH = 40
+PLAYER_HEIGHT = 30
+PLAYER_SPEED = 0.5
+
+MAP_WIDTH = 20
+MAP_HEIGHT = 15
+TILE_SIZE = 40
+
 # ----INIT GAME----
 # Always initialize pygame!
 pygame.init()
@@ -21,10 +29,10 @@ pygame.display.set_caption("Project Zombie")
 clock = pygame.time.Clock()
 
 # ----INIT MAP-----
-game_map = Map(20, 15)
+game_map = Map(MAP_WIDTH, MAP_HEIGHT, TILE_SIZE)
 
 # ---INIT PLAYER---
-my_player = Player(game_map, os.path.join(os.path.dirname(os.path.realpath(__file__)), os.path.join("images", "character.png")), 90)
+my_player = Player(PLAYER_WIDTH, PLAYER_HEIGHT, PLAYER_SPEED, game_map, os.path.join(os.path.dirname(os.path.realpath(__file__)), os.path.join("images", "character.png")), 90)
 
 # ----GAME LOOP----
 while True:
@@ -37,11 +45,12 @@ while True:
             exit()
 
     # ----UPDATE----
-    my_player.update(clock.get_time())
+    my_player.HandleUserInputs()
+    my_player.Update(clock.get_time())
 
     # ----DRAW----
-    game_map.draw(window)
-    my_player.draw(window)
+    game_map.Draw(window)
+    my_player.Draw(window)
 
     # Update display every frame
     pygame.display.update()
