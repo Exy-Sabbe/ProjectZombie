@@ -37,7 +37,7 @@ player = Player(PLAYER_WIDTH, PLAYER_HEIGHT, PLAYER_SPEED, map, os.path.join(os.
 
 # ---INIT CAMERA---
 camera = Camera()
-camera.SetWindowSize(GAME_WIDTH, GAME_HEIGHT)
+camera.SetWindow(window)
 
 # ----GAME LOOP----
 while True:
@@ -55,8 +55,8 @@ while True:
 
     # ----DRAW----
     window.fill("blue")
-    map.Draw(window)
-    player.Draw(window)
+    map.Draw()
+    player.Draw()
 
     # Update display every frame
     pygame.display.update()

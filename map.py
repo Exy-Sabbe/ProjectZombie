@@ -4,6 +4,7 @@ from copy import copy
 import random
 
 TILE_SIZE = 40
+PADDING = 1
 
 class Tile():
     def __init__(self, x_pos, y_pos, size, is_passable = True):
@@ -12,7 +13,7 @@ class Tile():
         self.__size = size
         self.__is_passable = is_passable
         halfsize = self.__size / 2
-        self.__rect = pygame.Rect(self.__x - halfsize, self.__y - halfsize, self.__size, self.__size)
+        self.__rect = pygame.Rect(self.__x - halfsize, self.__y - halfsize, self.__size + PADDING, self.__size + PADDING)
 
     def GetXPos(self):
         return self.__x
@@ -29,12 +30,8 @@ class Tile():
     def GetRect(self):
         return self.__rect
 
-    def Draw(self, window):
-        # For now draw a Green/Red rectangle to see if it is passable or not, images to be added later
-        camera_rect = copy(self.__rect)
-        camera_rect.x -= camera.Camera().GetXPos()
-        camera_rect.y -= camera.Camera().GetYPos()
-        pygame.draw.rect(window, (0, 255, 0) if self.__is_passable else (255, 0, 0), camera_rect)
+    def Draw(self):
+        camera.Camera().DrawRectOnWorld(self.__rect, (0, 255, 0) if self.__is_passable else (255, 0, 0))
 
 
 class Map():
@@ -66,6 +63,6 @@ class Map():
     def GetPixelHeight(self):
         return self.__height * self.__tile_size
 
-    def Draw(self, window):
+    def Draw(self):
         for tile in self.__tiles:
-            tile.Draw(window)
+            tile.Draw()

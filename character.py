@@ -121,7 +121,6 @@ class Character():
     def Update(self, delta_time):
         self.__Move(delta_time)
 
-    def Draw(self, window):
+    def Draw(self):
         if self.__rot_image_rect is not None:
-            image_pos = (self.__rot_image_rect.topleft[0] - camera.Camera().GetXPos(), self.__rot_image_rect.topleft[1] - camera.Camera().GetYPos())
-            window.blit(self.__rot_image, image_pos)
+            camera.Camera().DrawImageOnWorld(self.__rot_image, self.__rot_image_rect)

@@ -22,10 +22,7 @@ class Player(character.Character):
         if (keys[pygame.K_RIGHT] or keys[pygame.K_d]):
             self.MoveRight()
 
-
-        look_position = pygame.mouse.get_pos()
-        look_position = (look_position[0] + camera.Camera().GetXPos(), look_position[1] + camera.Camera().GetYPos())
-        self.LookAt(look_position)
+        self.LookAt(camera.Camera().ConvertToWorldSpace(pygame.mouse.get_pos()))
 
     def Update(self, delta_time):
         self.HandleUserInputs()
