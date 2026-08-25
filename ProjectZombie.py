@@ -11,7 +11,7 @@ GAME_HEIGHT = 600
 
 PLAYER_WIDTH = 40
 PLAYER_HEIGHT = 30
-PLAYER_SPEED = 0.5
+PLAYER_SPEED = 500 # Pixels per second
 
 MAP_WIDTH = 20
 MAP_HEIGHT = 15
@@ -50,7 +50,7 @@ while True:
             exit()
 
     # ----UPDATE----
-    player.Update(clock.get_time())
+    player.Update(clock.get_time() / 1000)
     camera.SetCameraPos(player.GetCenterPos())
 
     # ----DRAW----
@@ -62,4 +62,4 @@ while True:
     pygame.display.update()
 
     # Force game at 60 FPS (basically freeze game loop until enough time has passed for 1 frame)
-    clock.tick()
+    clock.tick(60)
