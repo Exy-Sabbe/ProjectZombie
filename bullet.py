@@ -15,6 +15,12 @@ class Bullet():
     def GetLifeTime(self):
         return self.__lifetime
 
+    def IsOverlappingWithWall(self, map):
+        for tile in map.GetTiles():
+            if not tile.IsPassable() and self.__image_rect.colliderect(tile.GetRect()):
+                return True
+        return False
+
     def Update(self, delta_time):
         speed = self.__speed * delta_time
         self.__image_rect.x += self.__direction[0] * speed
@@ -25,7 +31,7 @@ class Bullet():
         camera.Camera().DrawImageOnWorld(self.__image, self.__image_rect)
 
 class Bulletmanager(metaclass=singleton.Singleton):
-    def __init__(self, bullet_image_path, bullet_corr_angle, bullet_speed, bullet_lifetime, bullet_cooldown):
+    def __init__(self, bullet_image_path, bullet_corr_angle, bullet_speed, bullet_lifetime, bullet_cooldown, map):
         self.__bullet_image = pygame.image.load(bullet_image_path)
         self.__bullet_correction_angle= bullet_corr_angle
         self.__bullet_speed = bullet_speed
@@ -33,6 +39,7 @@ class Bulletmanager(metaclass=singleton.Singleton):
         self.__bullets = []
         self.__bullet_cooldown = bullet_cooldown
         self.__bullet_timer = 0
+        self.__map = map
 
     def Spawnbullet(self, position, direction):
         if self.__bullet_timer <= 0:
@@ -43,7 +50,7 @@ class Bulletmanager(metaclass=singleton.Singleton):
         new_bullets = []
         for bullet in self.__bullets:
             bullet.Update(delta_time)
-            if bullet.GetLifeTime() < self.__bullet_max_lifetime:
+            if bullet.GetLifeTime() < self.__bullet_max_lifetime and not bullet.IsOverlappingWithWall(self.__map):
                 new_bullets.append(bullet)
         self.__bullets = new_bullets
         self.__bullet_timer -= delta_time

@@ -41,7 +41,7 @@ map = Map(MAP_WIDTH, MAP_HEIGHT, TILE_SIZE)
 player = Player(PLAYER_WIDTH, PLAYER_HEIGHT, PLAYER_SPEED, map, os.path.join(os.path.dirname(os.path.realpath(__file__)), os.path.join("images", "character.png")), 90)
 
 # ---INIT BULLET MANAGER---
-bullet_manager = Bulletmanager(os.path.join(os.path.dirname(os.path.realpath(__file__)), os.path.join("images", "bullet.png")), 90, BULLET_SPEED, BULLET_LIFETIME, BULLET_COOLDOWN)
+bullet_manager = Bulletmanager(os.path.join(os.path.dirname(os.path.realpath(__file__)), os.path.join("images", "bullet.png")), 90, BULLET_SPEED, BULLET_LIFETIME, BULLET_COOLDOWN, map)
 
 # ---INIT CAMERA---
 camera = Camera()
