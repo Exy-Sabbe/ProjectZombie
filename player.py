@@ -13,15 +13,19 @@ class Player(character.Character):
         # Get current pressed keys
         keys = pygame.key.get_pressed()
 
-        if (keys[pygame.K_UP] or keys[pygame.K_w]):
-            self.MoveUp()
-        if (keys[pygame.K_DOWN] or keys[pygame.K_s]):
-            self.MoveDown()
-        if (keys[pygame.K_LEFT] or keys[pygame.K_a]):
-            self.MoveLeft()
-        if (keys[pygame.K_RIGHT] or keys[pygame.K_d]):
-            self.MoveRight()
+        x = 0
+        y = 0
 
+        if (keys[pygame.K_UP] or keys[pygame.K_w]) and not (keys[pygame.K_DOWN] or keys[pygame.K_s]):
+            y = -1
+        elif (keys[pygame.K_DOWN] or keys[pygame.K_s]) and not (keys[pygame.K_UP] or keys[pygame.K_w]):
+            y = 1
+        if (keys[pygame.K_LEFT] or keys[pygame.K_a]) and not (keys[pygame.K_RIGHT] or keys[pygame.K_d]):
+            x = -1
+        elif (keys[pygame.K_RIGHT] or keys[pygame.K_d]) and not (keys[pygame.K_LEFT] or keys[pygame.K_a]):
+            x = 1
+
+        self.SetMoveDirection((x, y))
         self.LookAt(camera.Camera().ConvertToWorldSpace(pygame.mouse.get_pos()))
 
     def Update(self, delta_time):

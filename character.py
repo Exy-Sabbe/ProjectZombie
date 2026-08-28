@@ -21,26 +21,14 @@ class Character():
         self.__rot_image = pygame.transform.rotate(self.__base_image, 0)
         self.__rot_image_rect = None
 
-        self.__should_move_up = False
-        self.__should_move_down = False
-        self.__should_move_left = False
-        self.__should_move_right = False
+        self.__move_dir = (0, 0)
         self.__should_look_at = (0, 0)
 
     def GetCenterPos(self):
         return (self._x + self.__width / 2, self._y + self.__height / 2)
 
-    def MoveUp(self):
-        self.__should_move_up = True
-
-    def MoveDown(self):
-        self.__should_move_down = True
-
-    def MoveLeft(self):
-        self.__should_move_left = True
-
-    def MoveRight(self):
-        self.__should_move_right = True
+    def SetMoveDirection(self, direction):
+        self.__move_dir = direction
 
     def LookAt(self, position):
         self.__should_look_at = position
@@ -85,27 +73,23 @@ class Character():
     
     def __Move(self, delta_time):
         # --MOVEMENT--
-        # Make speed independant on framerate
-        speed = self.__speed * delta_time
+        if self.__move_dir != (0, 0):
+            # Make speed independant on framerate
+            speed = self.__speed * delta_time
 
-        # Determine new temporary position of player (if correct keys are pressed)
-        new_x = None
-        new_y = None
+            # Normalize move direction
+            length = math.sqrt(self.__move_dir[0]**2 + self.__move_dir[1]**2)
+            self.__move_dir = (self.__move_dir[0] / length, self.__move_dir[1] / length)
 
-        if self.__should_move_up and not self.__should_move_down:
-            new_y = max(self._y - speed, self.__half_size)
-        if self.__should_move_down and not self.__should_move_up:
-            new_y = min(self._y + speed, self.__game_height - self.__half_size)
-        if self.__should_move_left and not self.__should_move_right:
-            new_x = max(self._x - speed, self.__half_size)
-        if self.__should_move_right and not self.__should_move_left:
-            new_x = min(self._x + speed, self.__game_width - self.__half_size)
+            # Determine new temporary position of player (if correct keys are pressed)
+            new_x = self._x + self.__move_dir[0] * speed
+            new_y = self._y + self.__move_dir[1] * speed
 
-        self.__should_move_up = self.__should_move_down = self.__should_move_left = self.__should_move_right = False
-
-        # If player moved, check if the new position overlaps with an impassable tile and correct
-        if new_x is not None or new_y is not None:    
+            # Check if the new position overlaps with an impassable tile and correct 
             self._x, self._y = self.__CalculateClippedPos(self._x if new_x is None else new_x, self._y if new_y is None else new_y)
+
+            # Reset move direction
+            self.__move_dir = (0, 0)
 
         # --ROTATION--
         # Get angle to rotate image (towards mouse)
