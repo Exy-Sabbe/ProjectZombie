@@ -1,0 +1,53 @@
+import singleton
+import pygame
+import camera
+import math
+
+class Bullet():
+    def __init__(self, position, speed, direction, image, correction_angle):
+        self.__speed = speed
+        length = math.sqrt(direction[0]**2 + direction[1]**2)
+        self.__direction = (direction[0] / length, direction[1] / length)
+        self.__image = pygame.transform.rotate(image, math.degrees(math.atan2(-direction[1], direction[0])) - correction_angle)
+        self.__image_rect = self.__image.get_rect(center = (position))
+        self.__lifetime = 0
+
+    def GetLifeTime(self):
+        return self.__lifetime
+
+    def Update(self, delta_time):
+        speed = self.__speed * delta_time
+        self.__image_rect.x += self.__direction[0] * speed
+        self.__image_rect.y += self.__direction[1] * speed
+        self.__lifetime += delta_time
+
+    def Draw(self):
+        camera.Camera().DrawImageOnWorld(self.__image, self.__image_rect)
+
+class Bulletmanager(metaclass=singleton.Singleton):
+    def __init__(self, bullet_image_path, bullet_corr_angle, bullet_speed, bullet_lifetime, bullet_cooldown):
+        self.__bullet_image = pygame.image.load(bullet_image_path)
+        self.__bullet_correction_angle= bullet_corr_angle
+        self.__bullet_speed = bullet_speed
+        self.__bullet_max_lifetime = bullet_lifetime
+        self.__bullets = []
+        self.__bullet_cooldown = bullet_cooldown
+        self.__bullet_timer = 0
+
+    def Spawnbullet(self, position, direction):
+        if self.__bullet_timer <= 0:
+            self.__bullets.append(Bullet(position, self.__bullet_speed, direction, self.__bullet_image, self.__bullet_correction_angle))
+            self.__bullet_timer = self.__bullet_cooldown
+
+    def Update(self, delta_time):
+        new_bullets = []
+        for bullet in self.__bullets:
+            bullet.Update(delta_time)
+            if bullet.GetLifeTime() < self.__bullet_max_lifetime:
+                new_bullets.append(bullet)
+        self.__bullets = new_bullets
+        self.__bullet_timer -= delta_time
+
+    def Draw(self):
+        for bullet in self.__bullets:
+            bullet.Draw()

@@ -4,12 +4,10 @@ import math
 import map
 
 class Character():
-    def __init__(self, width, height, speed, map, image_path, corr_angle = 0):
+    def __init__(self, width, height, speed, map, image_path, corr_angle):
         self._x = 0
         self._y = 0
 
-        self.__game_width = map.GetPixelWidth()
-        self.__game_height = map.GetPixelHeight()
         self.__map = map
         self.__width = width
         self.__height = height
@@ -24,8 +22,13 @@ class Character():
         self.__move_dir = (0, 0)
         self.__should_look_at = (0, 0)
 
+        self.__forward = (0, 0)
+
     def GetCenterPos(self):
         return (self._x + self.__width / 2, self._y + self.__height / 2)
+
+    def GetForwardsDirection(self):
+        return self.__forward
 
     def SetMoveDirection(self, direction):
         self.__move_dir = direction
@@ -96,6 +99,7 @@ class Character():
         player_rect = self.__base_image.get_rect(center = (self._x, self._y))
         mx, my = self.__should_look_at
         dx, dy = mx - player_rect.centerx, my - player_rect.centery
+        self.__forward = (dx, dy)
         angle = math.degrees(math.atan2(-dy, dx)) - self.__image_correction_angle
 
         # Rotate image around center given determined angle

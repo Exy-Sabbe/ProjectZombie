@@ -4,6 +4,7 @@ from sys import exit # Terminating the program
 from player import *
 from map import *
 from camera import *
+from bullet import *
 
 # ----CONSTANTS----
 GAME_WIDTH = 800
@@ -12,6 +13,10 @@ GAME_HEIGHT = 600
 PLAYER_WIDTH = 40
 PLAYER_HEIGHT = 30
 PLAYER_SPEED = 500 # Pixels per second
+
+BULLET_SPEED = 1000 # Pixels per second
+BULLET_LIFETIME = 3 # How long until automatically removed
+BULLET_COOLDOWN = 0.5 # How long until you can shoot again
 
 MAP_WIDTH = 20
 MAP_HEIGHT = 15
@@ -35,6 +40,9 @@ map = Map(MAP_WIDTH, MAP_HEIGHT, TILE_SIZE)
 # ---INIT PLAYER---
 player = Player(PLAYER_WIDTH, PLAYER_HEIGHT, PLAYER_SPEED, map, os.path.join(os.path.dirname(os.path.realpath(__file__)), os.path.join("images", "character.png")), 90)
 
+# ---INIT BULLET MANAGER---
+bullet_manager = Bulletmanager(os.path.join(os.path.dirname(os.path.realpath(__file__)), os.path.join("images", "bullet.png")), 90, BULLET_SPEED, BULLET_LIFETIME, BULLET_COOLDOWN)
+
 # ---INIT CAMERA---
 camera = Camera()
 camera.SetWindow(window)
@@ -50,13 +58,16 @@ while True:
             exit()
 
     # ----UPDATE----
-    player.Update(clock.get_time() / 1000)
+    delta_time = clock.get_time() / 1000
+    player.Update(delta_time)
+    bullet_manager.Update(delta_time)
     camera.SetCameraPos(player.GetCenterPos())
 
     # ----DRAW----
     window.fill("blue")
     map.Draw()
     player.Draw()
+    bullet_manager.Draw()
 
     # Update display every frame
     pygame.display.update()
