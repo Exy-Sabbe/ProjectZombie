@@ -23,10 +23,10 @@ class Character():
         self.__should_look_at = (0, 0)
 
     def GetCenterPos(self):
-        return (self._x + self.__width / 2, self._y + self.__height / 2)
+        return (self._x, self._y)
 
     def GetForwardsDirection(self):
-        return (self.__should_look_at[0] - self.GetCenterPos()[0], self.__should_look_at[1] - self.GetCenterPos()[1])
+        return (self.__should_look_at[0] - self._x, self.__should_look_at[1] - self._y)
 
     def SetMoveDirection(self, direction):
         self.__move_dir = direction

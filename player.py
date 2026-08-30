@@ -8,8 +8,8 @@ class Player(Character):
     def __init__(self, width, height, speed, map, image_path, corr_angle):
         Character.__init__(self, width, height, speed, map, image_path, corr_angle)
         # Spawn player in the middle of the map
-        self._x = (map.GetPixelWidth() - width) / 2
-        self._y = (map.GetPixelHeight() - height) / 2
+        self._x = map.GetPixelWidth() / 2
+        self._y = map.GetPixelHeight() / 2
 
     def HandleUserInputs(self):
         # Get current pressed keys
