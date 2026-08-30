@@ -28,7 +28,7 @@ class Player(Character):
             x = 1
 
         if (keys[pygame.K_SPACE] or pygame.mouse.get_pressed()[0]):
-            Bulletmanager().Spawnbullet((self._x, self._y), self.GetForwardsDirection())
+            Bulletmanager().Spawnbullet(self.GetCenterPos(), self.GetForwardsDirection())
 
         self.SetMoveDirection((x, y))
         self.LookAt(Camera().ConvertToWorldSpace(pygame.mouse.get_pos()))

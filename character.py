@@ -22,13 +22,11 @@ class Character():
         self.__move_dir = (0, 0)
         self.__should_look_at = (0, 0)
 
-        self.__forward = (0, 0)
-
     def GetCenterPos(self):
         return (self._x + self.__width / 2, self._y + self.__height / 2)
 
     def GetForwardsDirection(self):
-        return self.__forward
+        return (self.__should_look_at[0] - self.GetCenterPos()[0], self.__should_look_at[1] - self.GetCenterPos()[1])
 
     def SetMoveDirection(self, direction):
         self.__move_dir = direction
@@ -96,10 +94,9 @@ class Character():
 
         # --ROTATION--
         # Get angle to rotate image (towards mouse)
-        player_rect = self.__base_image.get_rect(center = (self._x, self._y))
+        player_rect = self.__base_image.get_rect(center = self.GetCenterPos())
         mx, my = self.__should_look_at
         dx, dy = mx - player_rect.centerx, my - player_rect.centery
-        self.__forward = (dx, dy)
         angle = math.degrees(math.atan2(-dy, dx)) - self.__image_correction_angle
 
         # Rotate image around center given determined angle
