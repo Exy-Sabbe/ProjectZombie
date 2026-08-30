@@ -7,26 +7,26 @@ from camera import *
 from bullet import *
 
 # ----CONSTANTS----
-GAME_WIDTH = 800
-GAME_HEIGHT = 600
+WINDOW_WIDTH = 800
+WINDOW_HEIGHT = 600
 
 PLAYER_WIDTH = 40
 PLAYER_HEIGHT = 30
 PLAYER_SPEED = 500 # Pixels per second
 
-BULLET_SPEED = 1000 # Pixels per second
+BULLET_SPEED = 2500 # Pixels per second
 BULLET_LIFETIME = 3 # How long until automatically removed
-BULLET_COOLDOWN = 0.5 # How long until you can shoot again
+BULLET_COOLDOWN = 0.2 # How long until you can shoot again
 
-MAP_WIDTH = 20
-MAP_HEIGHT = 15
+MAP_WIDTH = 40
+MAP_HEIGHT = 30
 TILE_SIZE = 40
 
 # ----INIT GAME----
 # Always initialize pygame!
 pygame.init()
 # Create window of desired size
-window = pygame.display.set_mode((GAME_WIDTH, GAME_HEIGHT))
+window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 # Set name of window
 pygame.display.set_caption("Project Zombie")
 # Set icon if wished, commented because of code order swapping around
@@ -35,17 +35,16 @@ pygame.display.set_caption("Project Zombie")
 clock = pygame.time.Clock()
 
 # ----INIT MAP-----
-map = Map(MAP_WIDTH, MAP_HEIGHT, TILE_SIZE)
+my_map = Map(MAP_WIDTH, MAP_HEIGHT, TILE_SIZE)
 
 # ---INIT PLAYER---
-player = Player(PLAYER_WIDTH, PLAYER_HEIGHT, PLAYER_SPEED, map, os.path.join(os.path.dirname(os.path.realpath(__file__)), os.path.join("images", "character.png")), 90)
+player = Player(PLAYER_WIDTH, PLAYER_HEIGHT, PLAYER_SPEED, my_map, os.path.join(os.path.dirname(os.path.realpath(__file__)), os.path.join("images", "character.png")), 90)
 
 # ---INIT BULLET MANAGER---
-bullet_manager = Bulletmanager(os.path.join(os.path.dirname(os.path.realpath(__file__)), os.path.join("images", "bullet.png")), 90, BULLET_SPEED, BULLET_LIFETIME, BULLET_COOLDOWN, map)
+bullet_manager = Bulletmanager(os.path.join(os.path.dirname(os.path.realpath(__file__)), os.path.join("images", "bullet.png")), 90, BULLET_SPEED, BULLET_LIFETIME, BULLET_COOLDOWN, my_map)
 
 # ---INIT CAMERA---
-camera = Camera()
-camera.SetWindow(window)
+Camera().SetWindow(window)
 
 # ----GAME LOOP----
 while True:
@@ -58,15 +57,23 @@ while True:
             exit()
 
     # ----UPDATE----
+    # Convert delta_time to seconds instead of milliseconds
     delta_time = clock.get_time() / 1000
+    # Update player
     player.Update(delta_time)
+    # Update bullets
     bullet_manager.Update(delta_time)
-    camera.SetCameraPos(player.GetCenterPos())
+    # Move camera on top of player again
+    Camera().SetCameraPos(player.GetCenterPos())
 
     # ----DRAW----
+    # Draw background
     window.fill("blue")
-    map.Draw()
+    # Draw map image
+    my_map.Draw()
+    # Draw player
     player.Draw()
+    # Draw bullets
     bullet_manager.Draw()
 
     # Update display every frame

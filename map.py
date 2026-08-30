@@ -43,9 +43,9 @@ class Map():
         for row in range(self.__height):
             for col in range(self.__width):
                 passable = True
+                # For now makes tiles not passable if they are on the edge of the game (Will be updated later with actual map art)
                 if row == 0 or col == 0 or row == self.__height - 1 or col == self.__width - 1:
                     passable = False
-                # For now randomize whether a tile is passable or not, will be updated based on map image
                 self.__tiles.append(Tile(col * tile_size + tile_size / 2, row * tile_size + tile_size / 2, tile_size, passable))
 
     def GetTiles(self):

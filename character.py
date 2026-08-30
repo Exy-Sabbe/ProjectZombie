@@ -37,8 +37,10 @@ class Character():
     def __CalculateClippedXPos(self, tile, x_pos):
         tile_x = tile.GetXPos()
         tile_size = tile.GetSize()
+        # If tile overlaps with player being on the right
         if tile_x + tile_size / 2 > x_pos - self.__half_size and tile_x < x_pos:
             return tile_x + tile_size / 2 + self.__half_size
+        # If tile overlaps with player being on the left
         elif tile_x - tile_size / 2 < x_pos + self.__half_size and tile_x > x_pos:
             return tile_x - tile_size / 2 - self.__half_size
         # Can't normally happen because we already confirmed tile is overlapping in calculateClippedPos
@@ -47,8 +49,10 @@ class Character():
     def __CalculateClippedYPos(self, tile, y_pos):
         tile_y = tile.GetYPos()
         tile_size = tile.GetSize()
+        # If tile overlaps with player being above
         if tile_y + tile_size / 2 > y_pos - self.__half_size and tile_y < y_pos:
             return tile_y + tile_size / 2 + self.__half_size
+        # If tile overlaps with player being below
         elif tile_y - tile_size / 2 < y_pos + self.__half_size and tile_y > y_pos:
             return tile_y - tile_size / 2 - self.__half_size
         # Can't normally happen because we already confirmed tile is overlapping in calculateClippedPos
