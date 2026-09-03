@@ -2,9 +2,10 @@ import singleton
 import pygame
 import camera
 import math
+import zombiemanager
 
 class Bullet():
-    def __init__(self, position, speed, direction, image, correction_angle):
+    def __init__(self, position, speed, damage, direction, image, correction_angle):
         self.__speed = speed
         # Normalize direction just in case
         length = math.sqrt(direction[0]**2 + direction[1]**2)
@@ -13,6 +14,7 @@ class Bullet():
         self.__image = pygame.transform.rotate(image, math.degrees(math.atan2(-direction[1], direction[0])) - correction_angle)
         self.__image_rect = self.__image.get_rect(center = (position))
         self.__lifetime = 0
+        self.__damage = damage
 
     def GetLifeTime(self):
         return self.__lifetime
@@ -20,6 +22,13 @@ class Bullet():
     def IsOverlappingWithWall(self, map):
         for tile in map.GetTiles():
             if not tile.IsPassable() and self.__image_rect.colliderect(tile.GetRect()):
+                return True
+        return False
+
+    def IsOverlappingWithZombie(self):
+        for zombie in zombiemanager.ZombieManager().GetZombies():
+            if self.__image_rect.colliderect(zombie.GetRotRect()):
+                zombie.ModifyHealth(-self.__damage)
                 return True
         return False
 
@@ -33,7 +42,7 @@ class Bullet():
         camera.Camera().DrawImageOnWorld(self.__image, self.__image_rect)
 
 class Bulletmanager(metaclass=singleton.Singleton):
-    def __init__(self, bullet_image_path, bullet_corr_angle, bullet_speed, bullet_lifetime, bullet_cooldown, map):
+    def __init__(self, bullet_image_path, bullet_corr_angle, bullet_speed, bullet_lifetime, bullet_cooldown, bullet_damage, map):
         self.__bullet_image = pygame.image.load(bullet_image_path)
         self.__bullet_correction_angle= bullet_corr_angle
         self.__bullet_speed = bullet_speed
@@ -41,12 +50,13 @@ class Bulletmanager(metaclass=singleton.Singleton):
         self.__bullets = []
         self.__bullet_cooldown = bullet_cooldown
         self.__bullet_timer = 0
+        self.__bullet_damage = bullet_damage
         self.__map = map
 
     def Spawnbullet(self, position, direction):
         # If bullet cooldown allows it, spawns bullet in position with direction
         if self.__bullet_timer <= 0:
-            self.__bullets.append(Bullet(position, self.__bullet_speed, direction, self.__bullet_image, self.__bullet_correction_angle))
+            self.__bullets.append(Bullet(position, self.__bullet_speed, self.__bullet_damage, direction, self.__bullet_image, self.__bullet_correction_angle))
             self.__bullet_timer = self.__bullet_cooldown
 
     def Update(self, delta_time):
@@ -55,7 +65,7 @@ class Bulletmanager(metaclass=singleton.Singleton):
             # Move bullet
             bullet.Update(delta_time)
             # If bullet hits wall OR exists for longer than max_lifetime, destroy it
-            if bullet.GetLifeTime() < self.__bullet_max_lifetime and not bullet.IsOverlappingWithWall(self.__map):
+            if bullet.GetLifeTime() < self.__bullet_max_lifetime and not bullet.IsOverlappingWithWall(self.__map) and not bullet.IsOverlappingWithZombie():
                 new_bullets.append(bullet)
         self.__bullets = new_bullets
         # Update bullet cooldown timer

@@ -14,14 +14,17 @@ WINDOW_HEIGHT = 600
 PLAYER_WIDTH = 40
 PLAYER_HEIGHT = 30
 PLAYER_SPEED = 500 # Pixels per second
+PLAYER_HEALTH = 100
 
 ZOMBIE_WIDTH = 45
 ZOMBIE_HEIGHT = 40
 ZOMBIE_SPEED = 400 # Pixels per second
+ZOMBIE_HEALTH = 20
 
 BULLET_SPEED = 2500 # Pixels per second
 BULLET_LIFETIME = 3 # How long until automatically removed
 BULLET_COOLDOWN = 0.2 # How long until you can shoot again
+BULLET_DAMAGE = 20
 
 MAP_WIDTH = 40
 MAP_HEIGHT = 30
@@ -43,13 +46,13 @@ clock = pygame.time.Clock()
 my_map = Map(MAP_WIDTH, MAP_HEIGHT, TILE_SIZE)
 
 # ---INIT PLAYER---
-player = Player(PLAYER_WIDTH, PLAYER_HEIGHT, my_map.GetPixelWidth() / 2, my_map.GetPixelHeight() / 2, PLAYER_SPEED, my_map, os.path.join(os.path.dirname(os.path.realpath(__file__)), os.path.join("images", "character.png")), 90)
+player = Player(PLAYER_WIDTH, PLAYER_HEIGHT, my_map.GetPixelWidth() / 2, my_map.GetPixelHeight() / 2, PLAYER_SPEED, PLAYER_HEALTH, my_map, os.path.join(os.path.dirname(os.path.realpath(__file__)), os.path.join("images", "character.png")), 90)
 
 # ---INIT BULLET MANAGER---
-bullet_manager = Bulletmanager(os.path.join(os.path.dirname(os.path.realpath(__file__)), os.path.join("images", "bullet.png")), 90, BULLET_SPEED, BULLET_LIFETIME, BULLET_COOLDOWN, my_map)
+bullet_manager = Bulletmanager(os.path.join(os.path.dirname(os.path.realpath(__file__)), os.path.join("images", "bullet.png")), 90, BULLET_SPEED, BULLET_LIFETIME, BULLET_COOLDOWN, BULLET_DAMAGE, my_map)
 
 # ---INIT ZOMBIE MANAGER---
-zombie_manager = ZombieManager([(100, 500), (200, 400)], ZOMBIE_WIDTH, ZOMBIE_HEIGHT, ZOMBIE_SPEED, my_map, os.path.join(os.path.dirname(os.path.realpath(__file__)), os.path.join("images", "zombie.png")), 180)
+zombie_manager = ZombieManager([(100, 500), (200, 400)], ZOMBIE_WIDTH, ZOMBIE_HEIGHT, ZOMBIE_SPEED, ZOMBIE_HEALTH, my_map, os.path.join(os.path.dirname(os.path.realpath(__file__)), os.path.join("images", "zombie.png")), 180, 10, 5, 60)
 
 # ---INIT CAMERA---
 Camera().SetWindow(window)

@@ -4,7 +4,7 @@ import math
 import map
 
 class Character():
-    def __init__(self, width, height, x_pos, y_pos, speed, map, image_path, corr_angle):
+    def __init__(self, width, height, x_pos, y_pos, speed, health, map, image_path, corr_angle):
         self._x = x_pos
         self._y = y_pos
 
@@ -12,6 +12,7 @@ class Character():
         self.__width = width
         self.__height = height
         self.__speed = speed
+        self.__health = health
         self.__half_size = max(self.__width, self.__height) / 2
         image = pygame.image.load(image_path)
         self.__base_image = pygame.transform.scale(image, (self.__width, self.__height))
@@ -27,6 +28,15 @@ class Character():
 
     def GetForwardsDirection(self):
         return (self.__should_look_at[0] - self._x, self.__should_look_at[1] - self._y)
+
+    def GetHealth(self):
+        return self.__health
+
+    def GetRotRect(self):
+        return self.__rot_image_rect
+
+    def ModifyHealth(self, amount):
+        self.__health += amount
 
     def SetMoveDirection(self, direction):
         self.__move_dir = direction
