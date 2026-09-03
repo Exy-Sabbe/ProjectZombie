@@ -4,9 +4,9 @@ import math
 import map
 
 class Character():
-    def __init__(self, width, height, speed, map, image_path, corr_angle):
-        self._x = 0
-        self._y = 0
+    def __init__(self, width, height, x_pos, y_pos, speed, map, image_path, corr_angle):
+        self._x = x_pos
+        self._y = y_pos
 
         self.__map = map
         self.__width = width
