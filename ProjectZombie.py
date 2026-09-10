@@ -52,7 +52,7 @@ player = Player(PLAYER_WIDTH, PLAYER_HEIGHT, my_map.GetPixelWidth() / 2, my_map.
 bullet_manager = Bulletmanager(os.path.join(os.path.dirname(os.path.realpath(__file__)), os.path.join("images", "bullet.png")), 90, BULLET_SPEED, BULLET_LIFETIME, BULLET_COOLDOWN, BULLET_DAMAGE, my_map)
 
 # ---INIT ZOMBIE MANAGER---
-zombie_manager = ZombieManager([(100, 500), (200, 400)], ZOMBIE_WIDTH, ZOMBIE_HEIGHT, ZOMBIE_SPEED, ZOMBIE_HEALTH, my_map, os.path.join(os.path.dirname(os.path.realpath(__file__)), os.path.join("images", "zombie.png")), 180, 10, 5, 60)
+zombie_manager = ZombieManager([(100, 500), (200, 400)], ZOMBIE_WIDTH, ZOMBIE_HEIGHT, ZOMBIE_SPEED, ZOMBIE_HEALTH, my_map, os.path.join(os.path.dirname(os.path.realpath(__file__)), os.path.join("images", "zombie.png")), 180, os.path.join(os.path.dirname(os.path.realpath(__file__)), os.path.join("images", "zombie_vision.png")), 10, 5, 60)
 
 # ---INIT CAMERA---
 Camera().SetWindow(window)

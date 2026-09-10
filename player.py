@@ -2,9 +2,9 @@ import pygame
 from character import *
 from camera import *
 from bullet import *
+import singleton
 
-
-class Player(Character):
+class Player(Character, metaclass=singleton.Singleton):
     def HandleUserInputs(self):
         # Get current pressed keys
         keys = pygame.key.get_pressed()

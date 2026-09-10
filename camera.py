@@ -1,6 +1,7 @@
 import copy
 import pygame
 import singleton
+import math
 from enum import Enum
 
 class DrawLayer(Enum):
@@ -70,6 +71,17 @@ class Camera(metaclass=singleton.Singleton):
             pygame.draw.circle(self.__debug_surface, color, camera_center, radius)
         elif layer == DrawLayer.GAME:
             pygame.draw.circle(self.__game_surface, color, camera_center, radius)
+
+    def DrawArcOnWorld(self, center, radius, color, layer = DrawLayer.GAME):
+        arc_rect = pygame.Rect(center[0] - radius, center[1] - radius, radius * 2, radius * 2)
+        arc_rect.x -= self.__x
+        arc_rect.y -= self.__y
+        if layer == DrawLayer.MAP:
+            pygame.draw.arc(self.__map_surface, color, arc_rect, 0, math.pi * 2)
+        elif layer == DrawLayer.DEBUG:
+            pygame.draw.arc(self.__debug_surface, color, arc_rect, 0, math.pi * 2)
+        elif layer == DrawLayer.GAME:
+            pygame.draw.arc(self.__game_surface, color, arc_rect, 0, math.pi * 2)
 
     def DrawImageOnWorld(self, image, image_rect, layer = DrawLayer.GAME):
         # Apply negative camera position to anything being drawn
