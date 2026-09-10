@@ -19,6 +19,7 @@ class Character():
         self.__image_correction_angle = corr_angle
         self.__rot_image = pygame.transform.rotate(self.__base_image, 0)
         self.__rot_image_rect = None
+        self.__rot_angle = 0
 
         self.__move_dir = (0, 0)
         self.__should_look_at = (0, 0)
@@ -40,6 +41,9 @@ class Character():
 
     def SetMoveDirection(self, direction):
         self.__move_dir = direction
+
+    def GetRotAngle(self):
+        return self.__rot_angle
 
     def LookAt(self, position):
         self.__should_look_at = position
@@ -111,10 +115,10 @@ class Character():
         player_rect = self.__base_image.get_rect(center = self.GetCenterPos())
         mx, my = self.__should_look_at
         dx, dy = mx - player_rect.centerx, my - player_rect.centery
-        angle = math.degrees(math.atan2(-dy, dx)) - self.__image_correction_angle
+        self.__rot_angle = math.degrees(math.atan2(-dy, dx)) - self.__image_correction_angle
 
         # Rotate image around center given determined angle
-        self.__rot_image = pygame.transform.rotate(self.__base_image, angle)
+        self.__rot_image = pygame.transform.rotate(self.__base_image, self.__rot_angle)
         self.__rot_image_rect = self.__rot_image.get_rect(center = player_rect.center)
 
     def Update(self, delta_time):

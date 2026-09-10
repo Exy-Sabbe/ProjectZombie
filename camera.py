@@ -7,6 +7,10 @@ class Camera(metaclass=singleton.Singleton):
         self.__x = 0
         self.__y = 0
         self.__window = None
+        self.__draw_debug = True
+
+    def SetDrawDebug(self, draw_debug):
+        self.__draw_debug = draw_debug
 
     def SetWindow(self, window):
         self.__window = window
@@ -20,14 +24,18 @@ class Camera(metaclass=singleton.Singleton):
         world_pos = (pos[0] + self.__x, pos[1] + self.__y)
         return world_pos
 
-    def DrawRectOnWorld(self, rect, color):
+    def DrawRectOnWorld(self, rect, color, is_debug = False):
+        if is_debug and not self.__draw_debug:
+            return
         # Apply negative camera position to anything being drawn
         camera_rect = copy.copy(rect)
         camera_rect.x -= self.__x
         camera_rect.y -= self.__y
         pygame.draw.rect(self.__window, color, camera_rect)
 
-    def DrawImageOnWorld(self, image, image_rect):
+    def DrawImageOnWorld(self, image, image_rect, is_debug = False):
+        if is_debug and not self.__draw_debug:
+            return
         # Apply negative camera position to anything being drawn
         image_pos = (image_rect.topleft[0] - self.__x, image_rect.topleft[1] - self.__y)
         self.__window.blit(image, image_pos)

@@ -1,19 +1,27 @@
 import pygame
-import random
+import camera
 import math
 from character import *
 
 class Zombie(Character):
-    def __init__(self, width, height, x_pos, y_pos, speed, health, map, image_path, corr_angle):
-        Character.__init__(self, width, height, x_pos, y_pos, speed, health, map, image_path, corr_angle,)
-        self.__angle = random.randint(1, 360)
+    def __init__(self, width, height, x_pos, y_pos, speed, health, map, image_path, corr_angle, vision_path, vision_corr_angle):
+        Character.__init__(self, width, height, x_pos, y_pos, speed, health, map, image_path, corr_angle)
+        image = pygame.image.load(vision_path)
+        self.__vision_image = pygame.transform.scale(image, (width * 8, height * 8))
+        self.__vision_correction_angle = vision_corr_angle
+        self.__rot_vision = pygame.transform.rotate(self.__vision_image, 0)
+        self.__rot_vision_rect = None
 
-    def Zombiebehavior(self):
-        dir = (math.cos(math.radians(self.__angle)), math.sin(math.radians(self.__angle)))
-        self.__angle += random.randint(-10, 10) / 10
-        self.SetMoveDirection(dir)
-        self.LookAt((self.GetCenterPos()[0] + dir[0], self.GetCenterPos()[1] - dir[1]))
+    def Behavior(self):
+        return None
 
-    def Update(self, delta_time):
-        self.Zombiebehavior()
+    def Update(self, delta_time):        
+        # Rotate image around center given determined angle
+        self.__rot_vision = pygame.transform.rotate(self.__vision_image, self.GetRotAngle())
+        self.__rot_vision_rect = self.__rot_vision.get_rect(center = self.GetCenterPos())
+        self.Behavior()
         Character.Update(self, delta_time)
+
+    def Draw(self):
+        camera.Camera().DrawImageOnWorld(self.__rot_vision, self.__rot_vision_rect, True)
+        Character.Draw(self)
