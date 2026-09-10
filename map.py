@@ -1,5 +1,5 @@
 import pygame
-import camera
+from camera import *
 from copy import copy
 import random
 
@@ -31,7 +31,7 @@ class Tile():
         return self.__rect
 
     def Draw(self):
-        camera.Camera().DrawRectOnWorld(self.__rect, (0, 255, 0) if self.__is_passable else (255, 0, 0))
+        Camera().DrawRectOnWorld(self.__rect, (0, 255, 0) if self.__is_passable else (255, 0, 0), DrawLayer.MAP)
 
 
 class Map():

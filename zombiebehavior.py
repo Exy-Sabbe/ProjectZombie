@@ -3,8 +3,8 @@ from zombie import *
 
 
 class ZombieBehavior(Zombie):
-    def __init__(self, width, height, x_pos, y_pos, speed, health, map, image_path, corr_angle, vision_path, vision_corr_angle):
-        Zombie.__init__(self, width, height, x_pos, y_pos, speed, health, map, image_path, corr_angle, vision_path, vision_corr_angle)
+    def __init__(self, width, height, x_pos, y_pos, speed, health, map, image_path, corr_angle):
+        Zombie.__init__(self, width, height, x_pos, y_pos, speed, health, map, image_path, corr_angle)
         self.__angle = random.randint(1, 360)
         self.__map_center = (map.GetPixelWidth() / 2, map.GetPixelHeight() / 2)
 

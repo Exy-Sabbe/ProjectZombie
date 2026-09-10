@@ -3,7 +3,7 @@ import random
 from zombiebehavior import *
 
 class ZombieManager(metaclass=singleton.Singleton):
-    def __init__(self, spawn_points, zombie_width, zombie_height, zombie_speed, zombie_health, map, zombie_image_path, zombie_corr_angle, zombie_vision_path, zombie_vision_corr_angle, start_amount, increment, timer):
+    def __init__(self, spawn_points, zombie_width, zombie_height, zombie_speed, zombie_health, map, zombie_image_path, zombie_corr_angle, start_amount, increment, timer):
         self.__zombies = []
         self.__spawn_points = spawn_points
         self.__zombie_width = zombie_width
@@ -13,8 +13,6 @@ class ZombieManager(metaclass=singleton.Singleton):
         self.__map = map
         self.__zombie_image_path = zombie_image_path
         self.__zombie_corr_angle = zombie_corr_angle
-        self.__zombie_vision_path = zombie_vision_path
-        self.__zombie_vision_corr_angel = zombie_vision_corr_angle
         self.__requested_zombies = start_amount
         self.__increment_zombies = increment
         self.__increment_timer = timer
@@ -43,7 +41,7 @@ class ZombieManager(metaclass=singleton.Singleton):
         # Spawn more zombies until requested amount is reached
         while len(self.__zombies) <= self.__requested_zombies:
             spawn_location = self.__GetRandomSpawnPoint()
-            self.__zombies.append(ZombieBehavior(self.__zombie_width, self.__zombie_height, spawn_location[0], spawn_location[1], self.__zombie_speed, self.__zombie_health, self.__map, self.__zombie_image_path, self.__zombie_corr_angle, self.__zombie_vision_path, self.__zombie_vision_corr_angel))
+            self.__zombies.append(ZombieBehavior(self.__zombie_width, self.__zombie_height, spawn_location[0], spawn_location[1], self.__zombie_speed, self.__zombie_health, self.__map, self.__zombie_image_path, self.__zombie_corr_angle))
 
         # Update existing zombies
         for zombie in self.__zombies:
