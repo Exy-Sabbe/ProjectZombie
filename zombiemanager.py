@@ -3,7 +3,7 @@ import random
 from zombiebehavior import *
 
 class ZombieManager(metaclass=singleton.Singleton):
-    def __init__(self, spawn_points, zombie_width, zombie_height, zombie_speed, zombie_health, map, zombie_image_path, zombie_corr_angle, zombie_vision_path, start_amount, increment, timer):
+    def __init__(self, player, spawn_points, zombie_width, zombie_height, zombie_speed, zombie_health, map, zombie_image_path, zombie_corr_angle, zombie_vision_path, start_amount, increment, timer):
         self.__zombies = []
         self.__spawn_points = spawn_points
         self.__zombie_width = zombie_width
@@ -18,12 +18,16 @@ class ZombieManager(metaclass=singleton.Singleton):
         self.__increment_zombies = increment
         self.__increment_timer = timer
         self.__increment_timer_value = 0
+        self.__player = player
 
     def __GetRandomSpawnPoint(self):
         return self.__spawn_points[random.randint(0, len(self.__spawn_points) - 1)]
 
     def GetZombies(self):
         return self.__zombies
+
+    def GetPlayer(self):
+        return self.__player
 
     def Update(self, delta_time):
         # Remove all dead zombies

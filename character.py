@@ -4,7 +4,7 @@ import math
 import map
 
 class Character():
-    def __init__(self, width, height, x_pos, y_pos, speed, health, map, image_path, corr_angle):
+    def __init__(self, width, height, x_pos, y_pos, speed, health, map, should_look_forward, image_path, corr_angle):
         self._x = x_pos
         self._y = y_pos
 
@@ -21,6 +21,7 @@ class Character():
         self.__rot_image_rect = None
         self.__rot_angle = 0
 
+        self.__should_look_forward = should_look_forward
         self.__move_dir = (0, 0)
         self.__should_look_at = (0, 0)
 
@@ -105,21 +106,27 @@ class Character():
             new_y = self._y + self.__move_dir[1] * speed
 
             # Check if the new position overlaps with an impassable tile and correct 
-            self._x, self._y = self.__CalculateClippedPos(self._x if new_x is None else new_x, self._y if new_y is None else new_y)
-
-            # Reset move direction
-            self.__move_dir = (0, 0)
+            self._x, self._y = self.__CalculateClippedPos(self._x if new_x is None else new_x, self._y if new_y is None else new_y) 
 
         # --ROTATION--
         # Get angle to rotate image (towards mouse)
-        player_rect = self.__base_image.get_rect(center = self.GetCenterPos())
-        mx, my = self.__should_look_at
-        dx, dy = mx - player_rect.centerx, my - player_rect.centery
-        self.__rot_angle = math.degrees(math.atan2(-dy, dx)) - self.__image_correction_angle
+        if self.__should_look_forward:
+            # Rotate image around center given determined angle
+            self.__rot_angle = math.degrees(math.atan2(-self.__move_dir[1], self.__move_dir[0])) - self.__image_correction_angle
+            self.__rot_image = pygame.transform.rotate(self.__base_image, self.__rot_angle)
+            self.__rot_image_rect = self.__rot_image.get_rect(center = self.GetCenterPos())
+        else:
+            player_rect = self.__base_image.get_rect(center = self.GetCenterPos())
+            mx, my = self.__should_look_at
+            dx, dy = mx - player_rect.centerx, my - player_rect.centery
+            self.__rot_angle = math.degrees(math.atan2(-dy, dx)) - self.__image_correction_angle
 
-        # Rotate image around center given determined angle
-        self.__rot_image = pygame.transform.rotate(self.__base_image, self.__rot_angle)
-        self.__rot_image_rect = self.__rot_image.get_rect(center = player_rect.center)
+            # Rotate image around center given determined angle
+            self.__rot_image = pygame.transform.rotate(self.__base_image, self.__rot_angle)
+            self.__rot_image_rect = self.__rot_image.get_rect(center = player_rect.center)
+
+        # Reset move direction
+        self.__move_dir = (0, 0)
 
     def Update(self, delta_time):
         self.__Move(delta_time)

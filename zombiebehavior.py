@@ -6,17 +6,18 @@ class ZombieBehavior(Zombie):
     def __init__(self, width, height, x_pos, y_pos, speed, health, map, image_path, corr_angle, vision_path):
         Zombie.__init__(self, width, height, x_pos, y_pos, speed, health, map, image_path, corr_angle, vision_path)
         self.__angle = random.randint(1, 360)
-        self.__map_center = (map.GetPixelWidth() / 2, map.GetPixelHeight() / 2)
 
     def Behavior(self):
-        self.WanderBehavior()
+        player = self.GetPlayerInRange()
+        if player is None:
+            self.WanderBehavior()
+        else:
+            dir = (player.GetCenterPos()[0] - self.GetCenterPos()[0], player.GetCenterPos()[1] - self.GetCenterPos()[1])
+            self.SetMoveDirection(dir)
+            self.__angle = -self.GetRotAngle()
 
     def WanderBehavior(self):
-        random_dir = (math.cos(math.radians(self.__angle)), math.sin(math.radians(self.__angle)))
         self.__angle += random.randint(-10, 10) / 10
-        pull_to_center_dir = (self.__map_center[0] - self.GetCenterPos()[0], self.__map_center[1] - self.GetCenterPos()[1])
-        length_pull = math.sqrt(pull_to_center_dir[0]**2 + pull_to_center_dir[1]**2)
-        pull_to_center_dir = (pull_to_center_dir[0] / length_pull, pull_to_center_dir[1] / length_pull)
-        final_dir = (random_dir[0] + pull_to_center_dir[0] * 0.2, random_dir[1] + pull_to_center_dir[1] * 0.2)
-        self.SetMoveDirection(final_dir)
-        self.LookAt((self.GetCenterPos()[0] + final_dir[0], self.GetCenterPos()[1] - final_dir[1]))
+        random_dir = (math.cos(math.radians(self.__angle)), math.sin(math.radians(self.__angle)))
+        self.SetMoveDirection(random_dir)
+        self.LookAt((self.GetCenterPos()[0] + random_dir[0] * 2, self.GetCenterPos()[1] + random_dir[1] * 2))

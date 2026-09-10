@@ -1,11 +1,10 @@
 from camera import *
 from character import *
-from player import *
-from zombiemanager import *
+import zombiemanager
 
 class Zombie(Character):
     def __init__(self, width, height, x_pos, y_pos, speed, health, map, image_path, corr_angle, vision_path):
-        Character.__init__(self, width, height, x_pos, y_pos, speed, health, map, image_path, corr_angle)
+        Character.__init__(self, width, height, x_pos, y_pos, speed, health, map, True, image_path, corr_angle)
         self.__detection_radius = 200
         self.__detection_image = pygame.image.load(vision_path)
 
@@ -13,16 +12,16 @@ class Zombie(Character):
         return None
 
     def GetPlayerInRange(self):
-        player_pos = Player().GetCenterPos()
+        player_pos = zombiemanager.ZombieManager().GetPlayer().GetCenterPos()
         zombie_pos = self.GetCenterPos()
         if (player_pos[0] - zombie_pos[0])**2 + (player_pos[1] - zombie_pos[1])**2 <= self.__detection_radius**2:
-            return Player()
+            return zombiemanager.ZombieManager().GetPlayer()
         else:
             return None
 
     def GetAllZombiesInRange(self):
         zombies_in_range = []
-        for zombie in ZombieManager().GetZombies():
+        for zombie in zombiemanager.ZombieManager().GetZombies():
             zombie_pos = zombie.GetCenterPos()
             own_pos = self.GetCenterPos()
             if (zombie_pos[0] - own_pos[0])**2 + (zombie_pos[1] - own_pos[1])**2 <= self.__detection_radius**2:

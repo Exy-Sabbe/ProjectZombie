@@ -46,13 +46,13 @@ clock = pygame.time.Clock()
 my_map = Map(MAP_WIDTH, MAP_HEIGHT, TILE_SIZE)
 
 # ---INIT PLAYER---
-player = Player(PLAYER_WIDTH, PLAYER_HEIGHT, my_map.GetPixelWidth() / 2, my_map.GetPixelHeight() / 2, PLAYER_SPEED, PLAYER_HEALTH, my_map, os.path.join(os.path.dirname(os.path.realpath(__file__)), os.path.join("images", "character.png")), 90)
+player = Player(PLAYER_WIDTH, PLAYER_HEIGHT, my_map.GetPixelWidth() / 2, my_map.GetPixelHeight() / 2, PLAYER_SPEED, PLAYER_HEALTH, my_map, False, os.path.join(os.path.dirname(os.path.realpath(__file__)), os.path.join("images", "character.png")), 90)
 
 # ---INIT BULLET MANAGER---
 bullet_manager = Bulletmanager(os.path.join(os.path.dirname(os.path.realpath(__file__)), os.path.join("images", "bullet.png")), 90, BULLET_SPEED, BULLET_LIFETIME, BULLET_COOLDOWN, BULLET_DAMAGE, my_map)
 
 # ---INIT ZOMBIE MANAGER---
-zombie_manager = ZombieManager([(100, 500), (200, 400)], ZOMBIE_WIDTH, ZOMBIE_HEIGHT, ZOMBIE_SPEED, ZOMBIE_HEALTH, my_map, os.path.join(os.path.dirname(os.path.realpath(__file__)), os.path.join("images", "zombie.png")), 180, os.path.join(os.path.dirname(os.path.realpath(__file__)), os.path.join("images", "zombie_vision.png")), 10, 5, 60)
+zombie_manager = ZombieManager(player, [(1300, 500), (1400, 400)], ZOMBIE_WIDTH, ZOMBIE_HEIGHT, ZOMBIE_SPEED, ZOMBIE_HEALTH, my_map, os.path.join(os.path.dirname(os.path.realpath(__file__)), os.path.join("images", "zombie.png")), 0, os.path.join(os.path.dirname(os.path.realpath(__file__)), os.path.join("images", "zombie_vision.png")), 10, 5, 60)
 
 # ---INIT CAMERA---
 Camera().SetWindow(window)
