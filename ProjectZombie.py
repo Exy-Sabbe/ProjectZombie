@@ -94,7 +94,7 @@ while True:
     # Draw zombies
     zombie_manager.Draw()
 
-    # Draw camera NEEDS TO BE THE LAST DRAW
+    # Draw camera NEEDS TO BE THE LAST DRAW, other draws just 'queue' the drawing, camera.draw makes them actually appear
     Camera().Draw()
 
     # Update display every frame

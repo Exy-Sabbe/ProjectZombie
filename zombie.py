@@ -16,6 +16,7 @@ class Zombie(Character):
         return None
 
     def GetPlayerInRange(self):
+        # Get player from zombiemanager, if close enough, return player, otherwise return None
         player_pos = zombiemanager.ZombieManager().GetPlayer().GetCenterPos()
         zombie_pos = self.GetCenterPos()
         if (player_pos[0] - zombie_pos[0])**2 + (player_pos[1] - zombie_pos[1])**2 <= self.__detection_radius**2:
@@ -24,6 +25,7 @@ class Zombie(Character):
             return None
 
     def GetAllZombiesInRange(self):
+        # Get all zombies, append to list if close enough, return list
         zombies_in_range = []
         for zombie in zombiemanager.ZombieManager().GetZombies():
             zombie_pos = zombie.GetCenterPos()

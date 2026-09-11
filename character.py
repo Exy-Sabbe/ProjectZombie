@@ -21,6 +21,7 @@ class Character():
         self.__rot_image_rect = None
         self.__rot_angle = 0
 
+        # Zombies should always look forward (move direction), players look towards 'free' position
         self.__should_look_forward = should_look_forward
         self.__move_dir = (0, 0)
         self.__should_look_at = (0, 0)
@@ -29,7 +30,10 @@ class Character():
         return (self._x, self._y)
 
     def GetForwardsDirection(self):
-        return (self.__should_look_at[0] - self._x, self.__should_look_at[1] - self._y)
+        if self.__should_look_forward:
+            return ...
+        else:
+            return (self.__should_look_at[0] - self._x, self.__should_look_at[1] - self._y)
 
     def GetHealth(self):
         return self.__health

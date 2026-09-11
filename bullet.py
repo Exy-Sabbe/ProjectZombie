@@ -64,7 +64,7 @@ class Bulletmanager(metaclass=singleton.Singleton):
         for bullet in self.__bullets:
             # Move bullet
             bullet.Update(delta_time)
-            # If bullet hits wall OR exists for longer than max_lifetime, destroy it
+            # If bullet hits wall OR zombie OR exists for longer than max_lifetime, destroy it
             if bullet.GetLifeTime() < self.__bullet_max_lifetime and not bullet.IsOverlappingWithWall(self.__map) and not bullet.IsOverlappingWithZombie():
                 new_bullets.append(bullet)
         self.__bullets = new_bullets

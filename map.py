@@ -31,6 +31,7 @@ class Tile():
         return self.__rect
 
     def Draw(self):
+        # Currently just red or green based on passable or not
         Camera().DrawRectOnWorld(self.__rect, (0, 255, 0) if self.__is_passable else (255, 0, 0), DrawLayer.MAP)
 
 
