@@ -20,4 +20,3 @@ class ZombieBehavior(Zombie):
         self.__angle += random.randint(-10, 10) / 10
         random_dir = (math.cos(math.radians(self.__angle)), math.sin(math.radians(self.__angle)))
         self.SetMoveDirection(random_dir)
-        self.LookAt((self.GetCenterPos()[0] + random_dir[0] * 2, self.GetCenterPos()[1] + random_dir[1] * 2))
