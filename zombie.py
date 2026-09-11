@@ -7,6 +7,10 @@ class Zombie(Character):
         Character.__init__(self, width, height, x_pos, y_pos, speed, health, map, True, image_path, corr_angle)
         self.__detection_radius = 200
         self.__detection_image = pygame.image.load(vision_path)
+        self.Init()
+
+    def Init(self):
+        return
 
     def Behavior(self):
         return None
@@ -36,5 +40,4 @@ class Zombie(Character):
         rect = self.__detection_image.get_rect()
         rect.center = self.GetCenterPos()
         Camera().DrawImageOnWorld(self.__detection_image, rect, DrawLayer.DEBUG)
-        Camera().DrawArcOnWorld(self.GetCenterPos(), self.__detection_radius, (0, 0, 0), DrawLayer.DEBUG)
         Character.Draw(self)

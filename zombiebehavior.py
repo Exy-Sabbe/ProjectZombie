@@ -1,12 +1,12 @@
 import random
 from zombie import *
 
-
 class ZombieBehavior(Zombie):
-    def __init__(self, width, height, x_pos, y_pos, speed, health, map, image_path, corr_angle, vision_path):
-        Zombie.__init__(self, width, height, x_pos, y_pos, speed, health, map, image_path, corr_angle, vision_path)
+    # Initialize desired variables
+    def Init(self):
         self.__angle = random.randint(1, 360)
 
+    # Define Zombie behavior
     def Behavior(self):
         player = self.GetPlayerInRange()
         if player is None:
