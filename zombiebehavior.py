@@ -8,7 +8,7 @@ class ZombieBehavior(Zombie):
 
     # Define Zombie behavior
     def Behavior(self):
-        player = self.GetPlayerInRange()
+        player = self.GetPlayerInVision()
         if player is None:
             self.WanderBehavior()
         else:

@@ -12,6 +12,7 @@ class Character():
         self.__width = width
         self.__height = height
         self.__speed = speed
+        self.__max_health = health
         self.__health = health
         self.__half_size = max(self.__width, self.__height) / 2
         image = pygame.image.load(image_path)
@@ -35,6 +36,9 @@ class Character():
         else:
             return (self.__should_look_at[0] - self._x, self.__should_look_at[1] - self._y)
 
+    def GetMaxHealth(self):
+        return self.__max_health
+
     def GetHealth(self):
         return self.__health
 
@@ -43,6 +47,7 @@ class Character():
 
     def ModifyHealth(self, amount):
         self.__health += amount
+        self.__health = max(self.__health, 0)
 
     def SetMoveDirection(self, direction):
         self.__move_dir = direction

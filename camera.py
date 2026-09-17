@@ -8,7 +8,8 @@ from enum import Enum
 class DrawLayer(Enum):
     MAP = 0,
     DEBUG = 1,
-    GAME = 2
+    GAME = 2,
+    UI = 3
 
 class Camera(metaclass=singleton.Singleton):
     def __init__(self):
@@ -55,6 +56,9 @@ class Camera(metaclass=singleton.Singleton):
         camera_rect.y -= self.__y
         # Draw on correct surface
         pygame.draw.rect(self.__surfaces[layer], color, camera_rect)
+
+    def DrawRectOnScreen(self, rect, color, layer = DrawLayer.UI):
+        pygame.draw.rect(self.__surfaces[layer], color, rect)
 
     def DrawCircleOnWorld(self, center, radius, color, layer = DrawLayer.GAME):
         # Apply negative camera position to anything being drawn

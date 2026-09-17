@@ -31,3 +31,8 @@ class Player(Character):
     def Update(self, delta_time):
         self.HandleUserInputs()
         Character.Update(self, delta_time)
+
+    def Draw(self):
+        Camera().DrawRectOnScreen((47, pygame.display.get_window_size()[1] - 78, 106, 31), ((0, 0, 0)))
+        Camera().DrawRectOnScreen((50, pygame.display.get_window_size()[1] - 75, self.GetHealth() / self.GetMaxHealth() * 100, 25), (255 - (self.GetHealth() / self.GetMaxHealth() * 255), self.GetHealth() / self.GetMaxHealth() * 255, 0))
+        Character.Draw(self)
