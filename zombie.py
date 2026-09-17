@@ -1,6 +1,8 @@
-from camera import *
-from character import *
-import zombiemanager
+import pygame
+from camera import Camera
+from camera import DrawLayer
+from character import Character
+import zombiemanager as zm
 import mathfunctions as mf
 
 class Zombie(Character):
@@ -23,29 +25,32 @@ class Zombie(Character):
 
     def GetPlayerInVision(self):
         # Get player from zombiemanager, if close enough, return player, otherwise return None
-        if mf.IsPositionInRange(self.GetCenterPos(), zombiemanager.ZombieManager().GetPlayer().GetCenterPos(), self.__detection_radius):
-            return zombiemanager.ZombieManager().GetPlayer()
+        if mf.IsPositionInRange(self.GetCenterPos(), zm.ZombieManager().GetPlayer().GetCenterPos(), self.__detection_radius):
+            return zm.ZombieManager().GetPlayer()
         else:
             return None
 
     def GetAllZombiesInVision(self):
         # Get all zombies, append to list if close enough, return list
         zombies_in_range = []
-        for zombie in zombiemanager.ZombieManager().GetZombies():
+        for zombie in zm.ZombieManager().GetZombies():
             if mf.IsPositionInRange(self.GetCenterPos(), zombie.GetCenterPos(), self.__detection_radius):
                 zombies_in_range.append(zombie)
         return zombies_in_range
 
     def __IsPlayerInAttackRange(self):
-        return mf.IsPositionInRange(self.GetCenterPos(), zombiemanager.ZombieManager().GetPlayer().GetCenterPos(), self.__attack_range)
+        return mf.IsPositionInRange(self.GetCenterPos(), zm.ZombieManager().GetPlayer().GetCenterPos(), self.__attack_range)
 
     def Update(self, delta_time):
         self.__attack_cooldown_timer -= delta_time
         if self.__IsPlayerInAttackRange():
             if self.__attack_cooldown_timer <= 0:
                 self.__attack_cooldown_timer = self.__attack_cooldown
-                zombiemanager.ZombieManager().GetPlayer().ModifyHealth(-self.__attack_damage)
+                zm.ZombieManager().GetPlayer().ModifyHealth(-self.__attack_damage)
+            self.SetShouldLookForward(False)
+            self.LookAt(self.GetPlayerInVision().GetCenterPos())
         else:
+            self.SetShouldLookForward(True)
             self.Behavior()
         Character.Update(self, delta_time)
 

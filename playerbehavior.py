@@ -1,4 +1,4 @@
-from player import *
+from player import Player
 
 class PlayerBehavior(Player):
     def Init(self):

@@ -1,14 +1,11 @@
 import pygame
-import os
 from sys import exit # Terminating the program
-from player import *
-from map import *
-from camera import *
-from bullet import *
-from zombiemanager import *
-
-def GetImagePath(imageName):
-    return os.path.join(os.path.dirname(os.path.realpath(__file__)), os.path.join("images", imageName))
+from player import Player
+from map import Map
+from camera import Camera
+from bullet import BulletManager
+from zombiemanager import ZombieManager
+import mathfunctions as mf
 
 # ----CONSTANTS----
 WINDOW_WIDTH = 800
@@ -51,13 +48,13 @@ clock = pygame.time.Clock()
 my_map = Map(MAP_WIDTH, MAP_HEIGHT, TILE_SIZE)
 
 # ---INIT PLAYER---
-player = Player(PLAYER_WIDTH, PLAYER_HEIGHT, my_map.GetPixelWidth() / 2, my_map.GetPixelHeight() / 2, PLAYER_SPEED, PLAYER_HEALTH, my_map, False, GetImagePath("character.png"), 90, IS_PLAYER_AI)
+player = Player(PLAYER_WIDTH, PLAYER_HEIGHT, my_map.GetPixelWidth() / 2, my_map.GetPixelHeight() / 2, PLAYER_SPEED, PLAYER_HEALTH, my_map, False, mf.GetImagePath("character.png"), 90, IS_PLAYER_AI)
 
 # ---INIT BULLET MANAGER---
-bullet_manager = Bulletmanager(GetImagePath("bullet.png"), 90, BULLET_SPEED, BULLET_LIFETIME, BULLET_COOLDOWN, BULLET_DAMAGE, my_map)
+bullet_manager = BulletManager(mf.GetImagePath("bullet.png"), 90, BULLET_SPEED, BULLET_LIFETIME, BULLET_COOLDOWN, BULLET_DAMAGE, my_map)
 
 # ---INIT ZOMBIE MANAGER---
-zombie_manager = ZombieManager(player, [(1300, 500), (1400, 400)], ZOMBIE_WIDTH, ZOMBIE_HEIGHT, ZOMBIE_SPEED, ZOMBIE_HEALTH, my_map, GetImagePath("zombie.png"), 0, GetImagePath("zombie_vision.png"), GetImagePath("zombie_attack_range.png"), 10, 5, 60)
+zombie_manager = ZombieManager(player, [(1300, 500), (1400, 400)], ZOMBIE_WIDTH, ZOMBIE_HEIGHT, ZOMBIE_SPEED, ZOMBIE_HEALTH, my_map, mf.GetImagePath("zombie.png"), 0, mf.GetImagePath("zombie_vision.png"), mf.GetImagePath("zombie_attack_range.png"), 10, 5, 60)
 
 # ---INIT CAMERA---
 Camera().SetWindow(window)

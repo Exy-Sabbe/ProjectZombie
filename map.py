@@ -1,7 +1,6 @@
 import pygame
-from camera import *
-from copy import copy
-import random
+from camera import Camera
+from camera import DrawLayer
 
 TILE_SIZE = 40
 PADDING = 1

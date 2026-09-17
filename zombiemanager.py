@@ -1,6 +1,6 @@
 import singleton
 import random
-from zombiebehavior import *
+from zombiebehavior import ZombieBehavior
 
 class ZombieManager(metaclass=singleton.Singleton):
     def __init__(self, player, spawn_points, zombie_width, zombie_height, zombie_speed, zombie_health, map, zombie_image_path, zombie_corr_angle, zombie_vision_path, zombie_attack_path, start_amount, increment, timer):

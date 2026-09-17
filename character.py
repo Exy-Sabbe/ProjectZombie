@@ -1,7 +1,6 @@
 import pygame
-import camera
 import math
-import map
+from camera import Camera
 
 class Character():
     def __init__(self, width, height, x_pos, y_pos, speed, health, map, should_look_forward, image_path, corr_angle):
@@ -57,6 +56,9 @@ class Character():
 
     def SetMoveDirection(self, direction):
         self.__move_dir = direction
+
+    def SetShouldLookForward(self, should_look_forward):
+        self.__should_look_forward = should_look_forward
 
     def GetRotAngle(self):
         return self.__rot_angle
@@ -148,4 +150,4 @@ class Character():
 
     def Draw(self):
         if self.__rot_image_rect is not None:
-            camera.Camera().DrawImageOnWorld(self.__rot_image, self.__rot_image_rect)
+            Camera().DrawImageOnWorld(self.__rot_image, self.__rot_image_rect)

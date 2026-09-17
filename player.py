@@ -1,7 +1,7 @@
 import pygame
-from character import *
-from camera import *
-from bullet import *
+from character import Character
+from camera import Camera
+from bullet import BulletManager
 import mathfunctions as mf
 
 class Player(Character):
@@ -31,7 +31,7 @@ class Player(Character):
 
         # Shooting
         if (keys[pygame.K_SPACE] or pygame.mouse.get_pressed()[0]):
-            Bulletmanager().Spawnbullet(self.GetCenterPos(), self.GetForwardsDirection())
+            BulletManager().Spawnbullet(self.GetCenterPos(), self.GetForwardsDirection())
 
         # Applying movement & rotation to self
         self.SetMoveDirection((x, y))

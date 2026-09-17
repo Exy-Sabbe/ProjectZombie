@@ -1,7 +1,7 @@
-import copy
 import pygame
-import singleton
 import math
+import singleton
+import copy
 from enum import Enum
 
 # Used to ensure draw order, THEY GET DRAWN IN THE ORDER PUT HERE

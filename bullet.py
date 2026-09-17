@@ -1,8 +1,8 @@
-import singleton
 import pygame
-import camera
 import math
-import zombiemanager
+import singleton
+from camera import Camera
+from zombiemanager import ZombieManager
 
 class Bullet():
     def __init__(self, position, speed, damage, direction, image, correction_angle):
@@ -26,7 +26,7 @@ class Bullet():
         return False
 
     def IsOverlappingWithZombie(self):
-        for zombie in zombiemanager.ZombieManager().GetZombies():
+        for zombie in ZombieManager().GetZombies():
             if self.__image_rect.colliderect(zombie.GetRotRect()):
                 zombie.ModifyHealth(-self.__damage)
                 return True
@@ -39,9 +39,9 @@ class Bullet():
         self.__lifetime += delta_time
 
     def Draw(self):
-        camera.Camera().DrawImageOnWorld(self.__image, self.__image_rect)
+        Camera().DrawImageOnWorld(self.__image, self.__image_rect)
 
-class Bulletmanager(metaclass=singleton.Singleton):
+class BulletManager(metaclass=singleton.Singleton):
     def __init__(self, bullet_image_path, bullet_corr_angle, bullet_speed, bullet_lifetime, bullet_cooldown, bullet_damage, map):
         self.__bullet_image = pygame.image.load(bullet_image_path)
         self.__bullet_correction_angle= bullet_corr_angle

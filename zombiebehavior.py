@@ -1,5 +1,6 @@
 import random
-from zombie import *
+import math
+from zombie import Zombie
 
 class ZombieBehavior(Zombie):
     # Initialize desired variables
