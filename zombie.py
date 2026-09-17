@@ -19,7 +19,7 @@ class Zombie(Character):
         return
 
     def Behavior(self):
-        return None
+        return
 
     def GetPlayerInVision(self):
         # Get player from zombiemanager, if close enough, return player, otherwise return None

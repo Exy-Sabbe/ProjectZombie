@@ -33,6 +33,8 @@ MAP_WIDTH = 40
 MAP_HEIGHT = 30
 TILE_SIZE = 40
 
+IS_PLAYER_AI = True
+
 # ----INIT GAME----
 # Always initialize pygame!
 pygame.init()
@@ -49,7 +51,7 @@ clock = pygame.time.Clock()
 my_map = Map(MAP_WIDTH, MAP_HEIGHT, TILE_SIZE)
 
 # ---INIT PLAYER---
-player = Player(PLAYER_WIDTH, PLAYER_HEIGHT, my_map.GetPixelWidth() / 2, my_map.GetPixelHeight() / 2, PLAYER_SPEED, PLAYER_HEALTH, my_map, False, GetImagePath("character.png"), 90)
+player = Player(PLAYER_WIDTH, PLAYER_HEIGHT, my_map.GetPixelWidth() / 2, my_map.GetPixelHeight() / 2, PLAYER_SPEED, PLAYER_HEALTH, my_map, False, GetImagePath("character.png"), 90, IS_PLAYER_AI)
 
 # ---INIT BULLET MANAGER---
 bullet_manager = Bulletmanager(GetImagePath("bullet.png"), 90, BULLET_SPEED, BULLET_LIFETIME, BULLET_COOLDOWN, BULLET_DAMAGE, my_map)
