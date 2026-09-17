@@ -56,6 +56,6 @@ class Zombie(Character):
         rect_attack = self.__attack_range_image.get_rect()
         rect_attack.center = self.GetCenterPos()
         Camera().DrawImageOnWorld(self.__attack_range_image, rect_attack, DrawLayer.DEBUG)
-        Camera().DrawRectOnWorld(pygame.Rect(self.GetTopLeftPos()[0] - 1, self.GetTopLeftPos()[1] - 21, self.GetSize() + 2, 12), (0, 0, 0))
-        Camera().DrawRectOnWorld(pygame.Rect(self.GetTopLeftPos()[0], self.GetTopLeftPos()[1] - 20, self.GetHealth() / self.GetMaxHealth() * self.GetSize(), 10), mf.GetHealthColor(self.GetHealth(), self.GetMaxHealth()))
+        Camera().DrawRectOnWorld(pygame.Rect(self.GetTopLeftPos()[0] - 1, self.GetTopLeftPos()[1] - 21, self.GetSize() + 2, 12), (0, 0, 0), DrawLayer.UI)
+        Camera().DrawRectOnWorld(pygame.Rect(self.GetTopLeftPos()[0], self.GetTopLeftPos()[1] - 20, self.GetHealth() / self.GetMaxHealth() * self.GetSize(), 10), mf.GetHealthColor(self.GetHealth(), self.GetMaxHealth()), DrawLayer.UI)
         Character.Draw(self)

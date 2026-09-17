@@ -33,7 +33,7 @@ MAP_WIDTH = 40
 MAP_HEIGHT = 30
 TILE_SIZE = 40
 
-IS_PLAYER_AI = True
+IS_PLAYER_AI = False
 
 # ----INIT GAME----
 # Always initialize pygame!
