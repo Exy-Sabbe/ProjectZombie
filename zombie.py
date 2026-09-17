@@ -1,7 +1,7 @@
 from camera import *
 from character import *
 import zombiemanager
-import mathfunctions
+import mathfunctions as mf
 
 class Zombie(Character):
     def __init__(self, width, height, x_pos, y_pos, speed, health, map, image_path, corr_angle, vision_path, attack_path):
@@ -23,7 +23,7 @@ class Zombie(Character):
 
     def GetPlayerInVision(self):
         # Get player from zombiemanager, if close enough, return player, otherwise return None
-        if mathfunctions.IsPositionInRange(self.GetCenterPos(), zombiemanager.ZombieManager().GetPlayer().GetCenterPos(), self.__detection_radius):
+        if mf.IsPositionInRange(self.GetCenterPos(), zombiemanager.ZombieManager().GetPlayer().GetCenterPos(), self.__detection_radius):
             return zombiemanager.ZombieManager().GetPlayer()
         else:
             return None
@@ -32,12 +32,12 @@ class Zombie(Character):
         # Get all zombies, append to list if close enough, return list
         zombies_in_range = []
         for zombie in zombiemanager.ZombieManager().GetZombies():
-            if mathfunctions.IsPositionInRange(self.GetCenterPos(), zombie.GetCenterPos(), self.__detection_radius):
+            if mf.IsPositionInRange(self.GetCenterPos(), zombie.GetCenterPos(), self.__detection_radius):
                 zombies_in_range.append(zombie)
         return zombies_in_range
 
     def __IsPlayerInAttackRange(self):
-        return mathfunctions.IsPositionInRange(self.GetCenterPos(), zombiemanager.ZombieManager().GetPlayer().GetCenterPos(), self.__attack_range)
+        return mf.IsPositionInRange(self.GetCenterPos(), zombiemanager.ZombieManager().GetPlayer().GetCenterPos(), self.__attack_range)
 
     def Update(self, delta_time):
         self.__attack_cooldown_timer -= delta_time
@@ -56,4 +56,6 @@ class Zombie(Character):
         rect_attack = self.__attack_range_image.get_rect()
         rect_attack.center = self.GetCenterPos()
         Camera().DrawImageOnWorld(self.__attack_range_image, rect_attack, DrawLayer.DEBUG)
+        Camera().DrawRectOnWorld(pygame.Rect(self.GetTopLeftPos()[0] - 1, self.GetTopLeftPos()[1] - 21, self.GetSize() + 2, 12), (0, 0, 0))
+        Camera().DrawRectOnWorld(pygame.Rect(self.GetTopLeftPos()[0], self.GetTopLeftPos()[1] - 20, self.GetHealth() / self.GetMaxHealth() * self.GetSize(), 10), mf.GetHealthColor(self.GetHealth(), self.GetMaxHealth()))
         Character.Draw(self)

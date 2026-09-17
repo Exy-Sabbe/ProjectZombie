@@ -61,6 +61,8 @@ zombie_manager = ZombieManager(player, [(1300, 500), (1400, 400)], ZOMBIE_WIDTH,
 Camera().SetWindow(window)
 #Camera().SetDrawDebug(False)
 
+game_over = False
+
 # ----GAME LOOP----
 while True:
     # Event handler (like inputs)
@@ -71,37 +73,42 @@ while True:
             pygame.quit()
             exit()
 
-    # ----UPDATE----
-    # Convert delta_time to seconds instead of milliseconds
-    delta_time = clock.get_time() / 1000
-    # Update player
-    player.Update(delta_time)
-    # Update bullets
-    bullet_manager.Update(delta_time)
-    # Update zombies
-    zombie_manager.Update(delta_time)
-    # Move camera on top of player again
-    Camera().SetCameraPos(player.GetCenterPos())
+    if not game_over:
+        # ----UPDATE----
+        # Convert delta_time to seconds instead of milliseconds
+        delta_time = clock.get_time() / 1000
+        # Update player
+        player.Update(delta_time)
+        # Update bullets
+        bullet_manager.Update(delta_time)
+        # Update zombies
+        zombie_manager.Update(delta_time)
+        # Move camera on top of player again
+        Camera().SetCameraPos(player.GetCenterPos())
 
-    # ----DRAW----
-    # Clear surfaces
-    Camera().ClearAllSurfaces()
-    # Draw background
-    window.fill("blue")
-    # Draw map image
-    my_map.Draw()
-    # Draw player
-    player.Draw()
-    # Draw bullets
-    bullet_manager.Draw()
-    # Draw zombies
-    zombie_manager.Draw()
+        # Handle Game Ending
+        if player.GetHealth() == 0:
+            game_over = True
 
-    # Draw camera NEEDS TO BE THE LAST DRAW, other draws just 'queue' the drawing, camera.draw makes them actually appear
-    Camera().Draw()
+        # ----DRAW----
+        # Clear surfaces
+        Camera().ClearAllSurfaces()
+        # Draw background
+        window.fill("blue")
+        # Draw map image
+        my_map.Draw()
+        # Draw player
+        player.Draw()
+        # Draw bullets
+        bullet_manager.Draw()
+        # Draw zombies
+        zombie_manager.Draw()
 
-    # Update display every frame
-    pygame.display.update()
+        # Draw camera NEEDS TO BE THE LAST DRAW, other draws just 'queue' the drawing, camera.draw makes them actually appear
+        Camera().Draw()
+
+        # Update display every frame
+        pygame.display.update()
 
     # Force game at 60 FPS (basically freeze game loop until enough time has passed for 1 frame)
     clock.tick(60)

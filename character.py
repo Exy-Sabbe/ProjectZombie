@@ -30,6 +30,12 @@ class Character():
     def GetCenterPos(self):
         return (self._x, self._y)
 
+    def GetTopLeftPos(self):
+        return (self._x - self.__half_size, self._y - self.__half_size)
+
+    def GetSize(self):
+        return self.__half_size * 2
+
     def GetForwardsDirection(self):
         if self.__should_look_forward:
             return ...

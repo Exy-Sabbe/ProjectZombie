@@ -2,6 +2,7 @@ import pygame
 from character import *
 from camera import *
 from bullet import *
+import mathfunctions as mf
 
 class Player(Character):
     def HandleUserInputs(self):
@@ -34,5 +35,5 @@ class Player(Character):
 
     def Draw(self):
         Camera().DrawRectOnScreen((47, pygame.display.get_window_size()[1] - 78, 106, 31), ((0, 0, 0)))
-        Camera().DrawRectOnScreen((50, pygame.display.get_window_size()[1] - 75, self.GetHealth() / self.GetMaxHealth() * 100, 25), (255 - (self.GetHealth() / self.GetMaxHealth() * 255), self.GetHealth() / self.GetMaxHealth() * 255, 0))
+        Camera().DrawRectOnScreen((50, pygame.display.get_window_size()[1] - 75, self.GetHealth() / self.GetMaxHealth() * 100, 25), mf.GetHealthColor(self.GetHealth(), self.GetMaxHealth()))
         Character.Draw(self)
