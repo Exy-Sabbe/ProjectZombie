@@ -41,11 +41,12 @@ class Zombie(Character):
 
     def Update(self, delta_time):
         self.__attack_cooldown_timer -= delta_time
-        if self.__IsPlayerInAttackRange() and self.__attack_cooldown_timer <= 0:
-            self.__attack_cooldown_timer = self.__attack_cooldown
-            zombiemanager.ZombieManager().GetPlayer().ModifyHealth(-self.__attack_damage)
-            print(zombiemanager.ZombieManager().GetPlayer().GetHealth())
-        self.Behavior()
+        if self.__IsPlayerInAttackRange():
+            if self.__attack_cooldown_timer <= 0:
+                self.__attack_cooldown_timer = self.__attack_cooldown
+                zombiemanager.ZombieManager().GetPlayer().ModifyHealth(-self.__attack_damage)
+        else:
+            self.Behavior()
         Character.Update(self, delta_time)
 
     def Draw(self):
